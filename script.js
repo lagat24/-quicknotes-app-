@@ -5,12 +5,18 @@ const searchInput = document.querySelector("#search-input");
 const notesList = document.querySelector("#notes-list");
 const noteCount = document.querySelector("#note-count");
 const errorMessage = document.querySelector("#error-message");
+const charCount = document.querySelector("#char-count");
 
 let notes = JSON.parse(localStorage.getItem("quicknotes")) || [];
 
 /* Save notes to localStorage */
 function saveNotes() {
   localStorage.setItem("quicknotes", JSON.stringify(notes));
+}
+
+/* Update character count */
+function updateCharCount() {
+  charCount.textContent = `${noteInput.value.length} / 200 characters`;
 }
 
 /* Update note count */
@@ -120,11 +126,16 @@ noteForm.addEventListener("submit", (event) => {
 
   noteInput.value = "";
   errorMessage.textContent = "";
+  updateCharCount();
   noteInput.focus();
 });
+
+/* Update character count while typing */
+noteInput.addEventListener("input", updateCharCount);
 
 /* Search */
 searchInput.addEventListener("input", render);
 
 /* Initial render */
 render();
+updateCharCount();
